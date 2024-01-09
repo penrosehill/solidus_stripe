@@ -26,7 +26,7 @@ when "engine"
   # so we need to break the match in order for this to work.
   # rubocop:disable Lint/LiteralInInterpolation
   Object.const_set "ENGINE_#{:ROOT}", File.expand_path('..', __dir__)
-  Object.const_set "ENGINE_#{:PATH}", File.expand_path('../lib/solidus_stripe/engine', __dir__)
+  Object.const_set "ENGINE_#{:PATH}", File.expand_path('../lib/solidus_stripe_v5/engine', __dir__)
   # rubocop:enable Lint/LiteralInInterpolation
 
   # Set up gems listed in the Gemfile.

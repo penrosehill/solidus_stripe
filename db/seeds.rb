@@ -1,8 +1,8 @@
 # frozen-string-literal: true
 
-require "solidus_stripe/seeds"
+require "solidus_stripe_v5/seeds"
 
 # rubocop:disable Rails/Output
 puts "Creating refund reason for Stripe refunds"
-SolidusStripe::Seeds.refund_reasons
+SolidusStripeV5::Seeds.refund_reasons
 # rubocop:enable Rails/Output

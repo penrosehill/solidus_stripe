@@ -1,7 +1,7 @@
 # Solidus Stripe
 
-[![CircleCI](https://circleci.com/gh/solidusio/solidus_stripe.svg?style=shield)](https://circleci.com/gh/solidusio/solidus_stripe)
-[![codecov](https://codecov.io/gh/solidusio/solidus_stripe/branch/main/graph/badge.svg)](https://codecov.io/gh/solidusio/solidus_stripe)
+[![CircleCI](https://circleci.com/gh/solidusio/solidus_stripe_v5.svg?style=shield)](https://circleci.com/gh/solidusio/solidus_stripe)
+[![codecov](https://codecov.io/gh/solidusio/solidus_stripe_v5/branch/main/graph/badge.svg)](https://codecov.io/gh/solidusio/solidus_stripe)
 [![yardoc](https://img.shields.io/badge/docs-rubydoc.info-informational)](https://rubydoc.info/gems/solidus_stripe)
 
 <!-- Explain what your extension does. -->
@@ -16,7 +16,7 @@ bin/rails generate solidus_stripe:install
 ```
 
 Then set the following environment variables both locally and in production in order
-to setup the `solidus_stripe_env_credentials` static preference as defined in the initializer:
+to setup the `solidus_stripe_v5_env_credentials` static preference as defined in the initializer:
 
 ```shell
 SOLIDUS_STRIPE_API_KEY                # will prefill the `api_key` preference
@@ -25,25 +25,25 @@ SOLIDUS_STRIPE_WEBHOOK_SIGNING_SECRET # will prefill the `webhook_signing_secret
 ```
 
 Once those are available you can create a new Stripe payment method in the /admin interface
-and select the `solidus_stripe_env_credentials` static preference.
+and select the `solidus_stripe_v5_env_credentials` static preference.
 
 ⚠️ Be sure to set the enviroment variables to the values for test mode in your development environment.
 
 ### Webhooks setup
 
-The webhooks URLs are automatically generated based on the enviroment, 
+The webhooks URLs are automatically generated based on the enviroment,
 by default it will be scoped to `live` in production and `test` everywhere else.
 
 #### Production enviroment
 
 Before going to production, you'll need to [register the webhook endpoint with
 Stripe](https://stripe.com/docs/webhooks/go-live), and make sure to subscribe
-to the events listed in [the `SolidusStripe::Webhook::Event::CORE`
-constant](https://github.com/solidusio/solidus_stripe/blob/main/lib/solidus_stripe/webhook/event.rb).
+to the events listed in [the `SolidusStripeV5::Webhook::Event::CORE`
+constant](https://github.com/solidusio/solidus_stripe_v5/blob/main/lib/solidus_stripe_v5/webhook/event.rb).
 
 So in your Stripe dashboard you'll need to set the webhook URL to:
 
-    https://store.example.com/solidus_stripe/live/webhooks
+    https://store.example.com/solidus_stripe_v5/live/webhooks
 
 #### Non-production enviroments
 
@@ -51,12 +51,12 @@ While for development [you should use the stripe CLI to forward the webhooks to 
 
 ```shell
 # Please refer to `stripe listen --help` for more options
-stripe listen --forward-to http://localhost:3000/solidus_stripe/test/webhooks
+stripe listen --forward-to http://localhost:3000/solidus_stripe_v5/test/webhooks
 ```
 
 ### Supporting `solidus_frontend`
 
-If you need support for `solidus_frontend` please refer to the [README of solidus_stripe v4](https://github.com/solidusio/solidus_stripe/tree/v4#readme).
+If you need support for `solidus_frontend` please refer to the [README of solidus_stripe v4](https://github.com/solidusio/solidus_stripe_v5/tree/v4#readme).
 
 ### Installing on a custom frontend
 
@@ -66,7 +66,7 @@ If you're using a custom frontend you'll need to adjust the code copied to your 
 
 ### Authorization and capture and checkout finalization
 
-Stripe supports two different flows for payments: [authorization and capture](https://stripe.com/docs/payments/capture-later) and immediate payment. 
+Stripe supports two different flows for payments: [authorization and capture](https://stripe.com/docs/payments/capture-later) and immediate payment.
 
 Both flows are supported by this extension, but you should be aware that they will happen before the order finalization, just before the final confirmation. At that moment if the payment method of choice will require additional authentication (e.g. 3D Secure) the extra authentication will be shown to the user.
 
@@ -124,12 +124,12 @@ Here's the list of events that are supported by default:
 
 #### Adding a new event handler
 
-In order to add a new handler you need to register the event you want to listen to, 
+In order to add a new handler you need to register the event you want to listen to,
 both [in Stripe](https://stripe.com/docs/webhooks/go-live) and in your application:
 
 ```ruby
-# config/initializers/solidus_stripe.rb
-SolidusStripe.configure do |config|
+# config/initializers/solidus_stripe_v5.rb
+SolidusStripeV5.configure do |config|
   config.webhook_events = %i[charge.succeeded]
 end
 ```
@@ -157,7 +157,7 @@ class UpdateAccountBalanceSubscriber
   end
 end
 
-# config/initializers/solidus_stripe.rb
+# config/initializers/solidus_stripe_v5.rb
 # ...
 Rails.application.config.to_prepare do
   UpdateAccountBalanceSubscriber.new.subscribe_to(Spree::Bus)
@@ -178,8 +178,8 @@ defaults to the [same value as Stripe
 default](https://stripe.com/docs/webhooks/signatures#replay-attacks)):
 
 ```ruby
-# config/initializers/solidus_stripe.rb
-SolidusStripe.configure do |config|
+# config/initializers/solidus_stripe_v5.rb
+SolidusStripeV5.configure do |config|
   config.webhook_signature_tolerance = 150
 end
 ```
@@ -201,7 +201,7 @@ Solidus payment methods are configured with a `auto_capture` option, which is us
 When compared to the Payment state machine, Stripe payment intents have different set of states and transitions.
 The most important difference is that on Stripe a failure is not a final state, rather just a way to start over.
 
-In order to map these concepts SolidusStripe will match states in a slightly unexpected way, as shown below.
+In order to map these concepts SolidusStripeV5 will match states in a slightly unexpected way, as shown below.
 
 | Stripe PaymentIntent Status | Solidus Payment State |
 | --------------------------- | --------------------- |
@@ -227,7 +227,7 @@ Retrieve your API Key and Publishable Key from your [Stripe testing dashboard](h
 get your webhook signing secret executing the `stripe listen` command.
 
 Set `SOLIDUS_STRIPE_API_KEY`, `SOLIDUS_STRIPE_PUBLISHABLE_KEY` and `SOLIDUS_STRIPE_WEBHOOK_SIGNING_SECRET` environment
-variables (e.g. via `direnv`), this will trigger the default initializer to create a static preference for SolidusStripe.
+variables (e.g. via `direnv`), this will trigger the default initializer to create a static preference for SolidusStripeV5.
 
 Run `bin/dev` to start both the sandbox rail server and the file watcher through Foreman. That will update the sandbox whenever
 a file is changed. When using `bin/dev` you can safely add `debugger` statements, even if Foreman won't provide a TTY, by connecting
@@ -257,14 +257,14 @@ When testing your application's integration with this extension you may use its 
 Simply add this require statement to your `spec/spec_helper.rb`:
 
 ```ruby
-require 'solidus_stripe/testing_support/factories'
+require 'solidus_stripe_v5/testing_support/factories'
 ```
 
 Or, if you are using `FactoryBot.definition_file_paths`, you can load Solidus core
 factories along with this extension's factories using this statement:
 
 ```ruby
-SolidusDevSupport::TestingSupport::Factories.load_for(SolidusStripe::Engine)
+SolidusDevSupport::TestingSupport::Factories.load_for(SolidusStripeV5::Engine)
 ```
 
 ### Running the sandbox

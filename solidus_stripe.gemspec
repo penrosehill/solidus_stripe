@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/solidus_stripe/version'
+require_relative 'lib/solidus_stripe_v5/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'solidus_stripe'
-  spec.version = SolidusStripe::VERSION
+  spec.name = 'solidus_stripe_v5'
+  spec.version = SolidusStripeV5::VERSION
   spec.authors = ['Solidus Team']
   spec.email = 'contact@solidus.io'
 
@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/solidusio/solidus_stripe'
-  spec.metadata['changelog_uri'] = 'https://github.com/solidusio/solidus_stripe/releases'
+  spec.metadata['changelog_uri'] = 'https://github.com/solidusio/solidus_stripe_v5/releases'
 
   spec.required_ruby_version = Gem::Requirement.new('>= 3.0')
 
@@ -49,12 +49,12 @@ Gem::Specification.new do |spec|
     If you need support for `solidus_frontend` please add `< 5`
     as a version requirement in your gemfile:
 
-    `gem 'solidus_stripe', '< 5'`
+    `gem 'solidus_stripe_v5', '< 5'`
 
     or if your tracking the github version please switch to
     the `v4` branch:
 
-    `gem 'solidus_stripe', github: 'solidusio/solidus_stripe', branch: 'v4'`
+    `gem 'solidus_stripe_v5', github: 'solidusio/solidus_stripe', branch: 'v4'`
 
     ------------------------------------------------------------------------
   TXT

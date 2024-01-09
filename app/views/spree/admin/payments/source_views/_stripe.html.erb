@@ -1,7 +1,7 @@
-<%= intent_id = SolidusStripe::PaymentMethod.intent_id_for_payment(payment) %>
+<%= intent_id = SolidusStripeV5::PaymentMethod.intent_id_for_payment(payment) %>
 
 <fieldset data-hook="credit_card">
-  <legend align="center"><%= SolidusStripe::PaymentSource.model_name.human %></legend>
+  <legend align="center"><%= SolidusStripeV5::PaymentSource.model_name.human %></legend>
 
   <div class="row">
     <div class="col-4">

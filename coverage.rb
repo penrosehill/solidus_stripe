@@ -20,7 +20,7 @@ def (SimpleCov::ResultAdapter).call(result)
   result = result.transform_keys do |path|
     template_path = path.sub(
       "#{SimpleCov.root}/dummy-app/",
-      "#{SimpleCov.root}/lib/generators/solidus_stripe/install/templates/"
+      "#{SimpleCov.root}/lib/generators/solidus_stripe_v5/install/templates/"
     )
     File.exist?(template_path) ? template_path : path
   end

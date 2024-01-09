@@ -1,5 +1,5 @@
 bump:
   recurse: false
-  file: 'lib/solidus_stripe/version.rb'
-  message: Bump SolidusStripe to %{version}
+  file: 'lib/solidus_stripe_v5/version.rb'
+  message: Bump SolidusStripeV5 to %{version}
   tag: true
