@@ -29,7 +29,7 @@ module SolidusStripeV5
     end
 
     def partial_name
-      "stripe"
+      "stripe_v5"
     end
 
     alias cart_partial_name partial_name
