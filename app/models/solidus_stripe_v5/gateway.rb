@@ -108,12 +108,15 @@ module SolidusStripeV5
         capture_method: "automatic",
       }
 
-      stripe_payment_intent = SolidusStripeV5::PaymentIntent.prepare_for_payment(
-        options[:originator],
-        **stripe_payment_intent_options,
-      )
+      intent = options[:originator].stripe_intent
+      if intent.status != 'succeeded'
+        stripe_payment_intent = SolidusStripeV5::PaymentIntent.prepare_for_payment(
+          options[:originator],
+          **stripe_payment_intent_options,
+        )
 
-      confirm_stripe_payment_intent(stripe_payment_intent.stripe_intent_id)
+        confirm_stripe_payment_intent(stripe_payment_intent.stripe_intent_id)
+      end
 
       build_payment_log(
         success: true,
